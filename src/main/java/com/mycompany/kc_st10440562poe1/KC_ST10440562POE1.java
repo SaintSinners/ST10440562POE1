@@ -13,5 +13,7 @@ public class KC_ST10440562POE1 {
     
 
     public static void main(String[] args) {
+        Login loginSystem = new Login();
+        loginSystem.run();        
     }
 }
