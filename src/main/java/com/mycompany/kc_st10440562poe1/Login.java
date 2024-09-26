@@ -4,6 +4,8 @@
  */
 package com.mycompany.kc_st10440562poe1;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -11,24 +13,33 @@ import java.util.*;
  */
 public class Login {
     //protect the login credentials
-    private Map<String, String> user;
-    private Map<String, String> password;
-    private Map<String, String> userNames;
-    private Scanner input;
+    private final Map<String, String> user;
+    private final Map<String, String> passwords;
+    private final Map<String, String> userNames;
+    private final Scanner input;
 
     //make the variables accessible to the main program
     public Login() {
         this.user = new HashMap<>();
-        this.password = new HashMap<>();
+        this.passwords = new HashMap<>();
         this.userNames = new HashMap<>();
         this.input = new Scanner(System.in);
     }
     //The registration module
     public void registerUser() {
-        System.out.print("Enter username: ");
-        String username = input.nextLine();
-        System.out.print("Enter password: ");
+        //run a do while loop for accuracy of the username
+        String username;
+        do {
+        System.out.print("Enter username (Must contain 5 characters + underscore): ");
+        username = input.nextLine();
+        } while (!CheckUsername(username));
+        System.out.println("Enter Strong password (8 characters long, with a number, Capital letter & Special Character): ");
         String password = input.nextLine();
+        
+        //run a do while loop for accuracy of the password      
+        do {
+        } while (!checkPassword(password));
+
         System.out.print("Enter your name: ");
         String name = input.nextLine();
         System.out.print("Enter your surname: ");      
@@ -36,6 +47,49 @@ public class Login {
         user.put(username,password);
         userNames.put (username, name + " " + surname);
         System.out.println("User, registered successfully! " + username);
+    }
+        //Check username
+    public boolean CheckUsername(String username){
+        //temp variable for checking
+        boolean  Found;
+        
+        //Check the username
+        if (username.contains("_") && username.length()==5){
+            //then assign to true
+            Found = true;
+            //message output
+            System.out.println("Username is successfully captured!");
+        }else{
+            //assign to false
+            Found = false;
+            System.out.println("Username must contain an underscore _ and be 5 Charactors long");
+        }
+        return Found;
+    }
+        //check the password
+    public boolean checkPassword(String password){
+        //pattern regex
+        Pattern check_num = Pattern.compile("[0123456789]");
+        Pattern ckeck_special = Pattern.compile("[!@#$%^&*-+_']");
+        Pattern check_upper =Pattern.compile("[ABCDEFGHIJKLMNOPQRSTUVWXYZ]");
+        
+        // temp Variable for Found
+        boolean Found;
+        
+        //check all here
+        if(check_num.matcher(password).find() && ckeck_special.matcher(password).find() && check_upper.matcher(password).find()){
+            
+            //assign true
+            Found = true;
+            //Message
+            System.out.println("Your Password was successfully captured!");
+        } else{
+            //assign false
+            Found = false;
+            //message
+            System.out.println("Your Password must contain an integer, 8 characters, special character & a capital letter");
+        }
+        return Found;
     }
     //The Login Module
     public boolean loginUser(int loginAttempts) {
