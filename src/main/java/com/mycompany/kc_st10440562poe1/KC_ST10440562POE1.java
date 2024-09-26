@@ -13,8 +13,8 @@ public class KC_ST10440562POE1 {
     
 
     public static void main(String[] args) {
+        //Object of a class called for the Login applicatin
         Login loginSystem = new Login();
         loginSystem.run(); 
-
     }
-}
+    }
