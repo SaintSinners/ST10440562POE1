@@ -11,38 +11,55 @@ import java.util.*;
  */
 public class Login {
     //protect the login credentials
-    private Map<String, String> users;
+    private Map<String, String> user;
     private Map<String, String> password;
-    private Scanner scanner;
+    private Map<String, String> userNames;
+    private Scanner input;
 
     //make the variables accessible to the main program
     public Login() {
-        this.users = new HashMap<>();
+        this.user = new HashMap<>();
         this.password = new HashMap<>();
-        this.scanner = new Scanner(System.in);
+        this.userNames = new HashMap<>();
+        this.input = new Scanner(System.in);
     }
     //The registration module
     public void registerUser() {
         System.out.print("Enter username: ");
-        String username = scanner.nextLine();
+        String username = input.nextLine();
         System.out.print("Enter password: ");
-        String password = scanner.nextLine();
-        users.put(username, password);
-        System.out.println("User registered successfully!");
+        String password = input.nextLine();
+        System.out.print("Enter your name: ");
+        String name = input.nextLine();
+        System.out.print("Enter your surname: ");      
+        String surname = input.nextLine();
+        user.put(username,password);
+        userNames.put (username, name + " " + surname);
+        System.out.println("User, registered successfully! " + username);
     }
     //The Login Module
-    public boolean loginUser() {
+    public boolean loginUser(int loginAttempts) {
         System.out.print("Enter username: ");
-        String username = scanner.nextLine();
+        String username = input.nextLine();
         System.out.print("Enter password: ");
-        String password = scanner.nextLine();
-        if (users.containsKey(username) && users.get(username).equals(password)) {
-            System.out.println("Login successful!");
+        String password = input.nextLine();
+        if (user.containsKey(username) && user.get(username).equals(password)) {
+            String fullName = userNames.get(username);
+            System.out.println("Login Successful! Welcome, " + fullName);
+            loginAttempts = 0; 
+        // Reset the counter on successful login
             return true;
         } else {
+            // Increment the counter on failed login
+            loginAttempts++; 
             System.out.println("Invalid username or password!");
-            return false;
-        }
+            if (loginAttempts >= 5) {
+                // Exit the program if login the attempts are beyond 5
+                System.out.println("User is barred from the program.");
+                System.exit(0); 
+            }
+            return false;           
+    }
     }
     //Method called for display and Options at Start
     public void run() {
@@ -58,10 +75,10 @@ public class Login {
             System.out.print("Choose a number option from provided: ");
             
             //Allow user to insert a selection
-            int option = Integer.parseInt(scanner.nextLine());
+            int option = Integer.parseInt(input.nextLine());
             switch (option) {
                 case 1 -> registerUser();
-                case 2 -> loginUser();
+                case 2 -> loginUser(0);
                 case 3 -> { System.out.println("Goodbye!");
                 
                         // Login successful, exit the loop
