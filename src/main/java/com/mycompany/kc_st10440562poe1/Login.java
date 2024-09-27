@@ -17,6 +17,10 @@ public class Login {
     private final Map<String, String> passwords;
     private final Map<String, String> userNames;
     private final Scanner input;
+    //Initialize counter variables
+       private int loginAttempts;
+       private int successfulLogins = 0;
+       private int failedLogins = 0;    
 
     //make the variables accessible to the main program
     public Login() {
@@ -24,6 +28,18 @@ public class Login {
         this.passwords = new HashMap<>();
         this.userNames = new HashMap<>();
         this.input = new Scanner(System.in);
+    }
+    //Method to print account report
+    public void printAccountReport() {
+        System.out.println("Account Report:");
+        System.out.println("Registered Users:");
+        for (String username : userNames.keySet()) {
+            System.out.println(username + ": " + userNames.get(username));
+        }
+        //Print Results at the end of the program
+        System.out.println("Total Login Attempts: " + (loginAttempts + successfulLogins + failedLogins));
+        System.out.println("Successful Logins: " + successfulLogins);
+        System.out.println("Failed Logins: " + failedLogins);
     }
     //The registration module
     public void registerUser() {
@@ -40,12 +56,12 @@ public class Login {
         do {
         } while (!checkPassword(password));
 
-        System.out.print("Enter your name: ");
-        String name = input.nextLine();
-        System.out.print("Enter your surname: ");      
-        String surname = input.nextLine();
+        System.out.print("Enter your first name: ");
+        String firstName = input.nextLine();
+        System.out.print("Enter your last name: ");      
+        String lastName = input.nextLine();
         user.put(username,password);
-        userNames.put (username, name + " " + surname);
+        userNames.put (username, firstName + " " + lastName);
         System.out.println("User, registered successfully! " + username);
     }
         //Check username
@@ -58,11 +74,11 @@ public class Login {
             //then assign to true
             Found = true;
             //message output
-            System.out.println("Username is successfully captured!");
+            System.out.println("Username successfully captured!");
         }else{
             //assign to false
             Found = false;
-            System.out.println("Username must contain an underscore _ and be 5 Charactors long");
+            System.out.println("Username is not correctly formatted, please ensure that your username contains an underscoreand is no more tha 5 characters in length");
         }
         return Found;
     }
@@ -82,39 +98,51 @@ public class Login {
             //assign true
             Found = true;
             //Message
-            System.out.println("Your Password was successfully captured!");
+            System.out.println("Password successfully captured!");
         } else{
             //assign false
             Found = false;
             //message
-            System.out.println("Your Password must contain an integer, 8 characters, special character & a capital letter");
+            System.out.println("Password is not correctly formatted, Please ensure that your password contains atleast 8 characters, a capital letter, a number and a special character");
         }
         return Found;
     }
     //The Login Module
-    public boolean loginUser(int loginAttempts) {
+    public String loginUser(int loginAttempts) {
         System.out.print("Enter username: ");
         String username = input.nextLine();
         System.out.print("Enter password: ");
         String password = input.nextLine();
         if (user.containsKey(username) && user.get(username).equals(password)) {
+            //congactinate first name  & last name
             String fullName = userNames.get(username);
-            System.out.println("Login Successful! Welcome, " + fullName);
-            loginAttempts = 0; 
+            System.out.println("Welcome " + fullName +", it is great to see you again");
+        //Send report for attempts            
+            successfulLogins++; 
         // Reset the counter on successful login
-            return true;
+            return returnLoginStatus(true);
         } else {
             // Increment the counter on failed login
             loginAttempts++; 
-            System.out.println("Invalid username or password!");
+            System.out.println("Username or password incorrect, please try again");
             if (loginAttempts >= 5) {
                 // Exit the program if login the attempts are beyond 5
                 System.out.println("User is barred from the program.");
                 System.exit(0); 
             }
-            return false;           
+            //Report all error entries
+            failedLogins++;
+            return returnLoginStatus(false);           
     }
     }
+    //Method to return the login status post attempts
+    public String returnLoginStatus(boolean loginStatus) {
+    if (loginStatus) {
+        return "Successful Login";
+    } else {
+        return "Failed Login";
+    }
+}
     //Method called for display and Options at Start
     public void run() {
         //Using a while loop for the promting (No Limit on Attempts)
@@ -133,7 +161,9 @@ public class Login {
             switch (option) {
                 case 1 -> registerUser();
                 case 2 -> loginUser(0);
-                case 3 -> { System.out.println("Goodbye!");
+                case 3 -> { 
+                    printAccountReport();
+                    System.out.println("Goodbye!");
                 
                         // Login successful, exit the loop
                         return;
