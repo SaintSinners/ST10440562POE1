@@ -33,9 +33,6 @@ public class KC_ST10440562POE1 {
         status.returnLoginStatus(true);
         System.out.println("--------------------------------------------------");
         
-        //A method has been created to report back on Activities
-        Login Report = new Login();
-        Report.printAccountReport();
-        System.out.println("--------------------------------------------------");
-    }
+        //A method has been created to report back on Activities and runs at termination of program
+        }
     }

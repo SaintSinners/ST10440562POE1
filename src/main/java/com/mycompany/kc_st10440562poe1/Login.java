@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 public class Login {
     //protect the login credentials
     private final Map<String, String> user;
-    private final Map<String, String> passwords;
+    private final Map<String, String> password;
     private final Map<String, String> userNames;
     private final Scanner input;
     //Initialize counter variables
@@ -25,7 +25,7 @@ public class Login {
     //make the variables accessible to the main program
     public Login() {
         this.user = new HashMap<>();
-        this.passwords = new HashMap<>();
+        this.password = new HashMap<>();
         this.userNames = new HashMap<>();
         this.input = new Scanner(System.in);
     }
@@ -49,18 +49,19 @@ public class Login {
         System.out.print("Enter username (Must contain 5 characters + underscore): ");
         username = input.nextLine();
         } while (!CheckUsername(username));
-        System.out.println("Enter Strong password (8 characters long, with a number, Capital letter & Special Character): ");
-        String password = input.nextLine();
-        
-        //run a do while loop for accuracy of the password      
+        //request password
+        //run a do while loop for accuracy of the password 
+        String password;
         do {
+        System.out.println("Enter Strong password (at least 8 characters long, with a number, Capital letter & Special Character): ");
+        password = input.nextLine();
         } while (!checkPassword(password));
 
         System.out.print("Enter your first name: ");
         String firstName = input.nextLine();
         System.out.print("Enter your last name: ");      
         String lastName = input.nextLine();
-        user.put(username,password);
+        user.put(username, password);
         userNames.put (username, firstName + " " + lastName);
         System.out.println("User, registered successfully! " + username);
     }
@@ -108,13 +109,14 @@ public class Login {
         return Found;
     }
     //The Login Module
-    public String loginUser(int loginAttempts) {
+    public String loginUser() {
+        while (true){
         System.out.print("Enter username: ");
         String username = input.nextLine();
         System.out.print("Enter password: ");
         String password = input.nextLine();
         if (user.containsKey(username) && user.get(username).equals(password)) {
-            //congactinate first name  & last name
+            //concagtinate first name  & last name
             String fullName = userNames.get(username);
             System.out.println("Welcome " + fullName +", it is great to see you again");
         //Send report for attempts            
@@ -126,14 +128,21 @@ public class Login {
             loginAttempts++; 
             System.out.println("Username or password incorrect, please try again");
             if (loginAttempts >= 5) {
-                // Exit the program if login the attempts are beyond 5
-                System.out.println("User is barred from the program.");
-                System.exit(0); 
-            }
-            //Report all error entries
-            failedLogins++;
+                //Propt user to try again or Exit
+                System.out.println("You have exceed the maximum number of attempts");
+                System.out.println("input yes or no to continue");
+                String response = input.nextLine();
+                if (response.equalsIgnoreCase("yes")){
+                    //Reset the counter and return to main method
+                    loginAttempts = 0;
+                }
+            }else {
+            //End the program
+            System.out.println("Goodbye");
             return returnLoginStatus(false);           
-    }
+            }
+            }
+        }
     }
     //Method to return the login status post attempts
     public String returnLoginStatus(boolean loginStatus) {
@@ -160,7 +169,14 @@ public class Login {
             int option = Integer.parseInt(input.nextLine());
             switch (option) {
                 case 1 -> registerUser();
-                case 2 -> loginUser(0);
+                case 2 -> { String loginStatus = loginUser();
+                System.out.println(loginStatus);
+                if (loginStatus.equals("Successful Login")) {
+                    System.out.println("You are now logged in.");
+                } else {
+                    System.out.println("Login failed. Please try again.");
+                }
+            }
                 case 3 -> { 
                     printAccountReport();
                     System.out.println("Goodbye!");
