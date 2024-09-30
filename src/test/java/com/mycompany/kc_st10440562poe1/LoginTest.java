@@ -15,7 +15,7 @@ public class LoginTest {
     @Test
     public void testCheckUsername() {
         System.out.println("CheckUsername");
-        String username = "engwe";
+        String username = "kyle!!!!!!!!";
         Login instance = new Login();
         boolean expResult = false;
         boolean result = instance.CheckUsername(username);
@@ -24,7 +24,7 @@ public class LoginTest {
         @Test
     public void testCheckUsernameTrue() {
         System.out.println("CheckUsername");
-        String username = "engw_";
+        String username = "kyl_1";
         Login instance = new Login();
         boolean expResult = true;
         boolean result = instance.CheckUsername(username);
@@ -33,7 +33,7 @@ public class LoginTest {
     @Test
     public void testCheckPassword() {
         System.out.println("checkPassword");
-        String password = "lionsden4d";
+        String password = "password";
         Login instance = new Login();
         boolean expResult = false;
         boolean result = instance.checkPassword(password);
@@ -42,7 +42,7 @@ public class LoginTest {
         @Test
     public void testCheckPasswordTrue() {
         System.out.println("checkPassword");
-        String password = "Gideonwar@800";
+        String password = "Ch&&sec@ke99";
         Login instance = new Login();
         boolean expResult = true;
         boolean result = instance.checkPassword(password);
