@@ -27,7 +27,7 @@ public class KC_ST10440562POE1 {
                          1. Register
                          2. Login
                          3. Exit
-                         ----------------------------------------------""";
+                         -------------------------------------------------------""";
         String optionString = JOptionPane.showInputDialog(message + "\nChoose a number option from provided:");
 
         // Check if the user clicked "Cancel" or closed the dialog
@@ -58,8 +58,9 @@ public class KC_ST10440562POE1 {
                         String easyKanbanMenu = """
                                                 Welcome to EasyKanban
                                                 1. Add task
-                                                2. Coming soon
-                                                3. Quit""";
+                                                2. Show Report
+                                                3. Quit
+                                                -------------------------------------------------------""";
                         String easyKanbanOption = JOptionPane.showInputDialog(easyKanbanMenu + "\nChoose an option:");
                         
                         // Check if the user clicked "Cancel" or closed the dialog
@@ -77,6 +78,7 @@ public class KC_ST10440562POE1 {
                             continue; // Restart the loop
                         }
                         Tasks work = new Tasks();
+
                         switch (easyKanbanChoice) {
                             case 1 -> // Add task functionality
                                 work.AddTask();
