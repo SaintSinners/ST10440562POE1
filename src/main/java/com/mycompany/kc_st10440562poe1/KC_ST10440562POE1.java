@@ -83,7 +83,7 @@ public class KC_ST10440562POE1 {
                             case 1 -> // Add task functionality
                                 work.AddTask();
                             case 2 -> JOptionPane.showMessageDialog(null, "Coming soon...");
-                            case 3 -> {
+                            case 3 -> { login.printAccountReport();
                                 JOptionPane.showMessageDialog(null, "Goodbye!");
                                 return; // Exit the loop
                             }
@@ -105,5 +105,3 @@ public class KC_ST10440562POE1 {
 
         }
     }
-
-    

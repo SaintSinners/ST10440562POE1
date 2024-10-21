@@ -20,7 +20,7 @@ public class Login {
     //Initialize counter variables
        private int loginAttempts;
        private int successfulLogins = 0;
-       private int failedLogins = 0;    
+       private final int failedLogins = 0;    
 
     //make the variables accessible to the main program
     public Login() {
@@ -30,17 +30,27 @@ public class Login {
         this.input = new Scanner(System.in);
     }
     //Method to print account report
-    public void printAccountReport() {
-        System.out.println("Account Report:");
-        System.out.println("Registered Users:");
-        for (String username : userNames.keySet()) {
-            System.out.println(username + ": " + userNames.get(username));
-        }
-        //Print Results at the end of the program
-        System.out.println("Total Login Attempts: " + (loginAttempts + successfulLogins + failedLogins));
-        System.out.println("Successful Logins: " + successfulLogins);
-        System.out.println("Failed Logins: " + failedLogins);
+public void printAccountReport() {
+    // Create a StringBuilder to build the report string
+    StringBuilder report = new StringBuilder();
+    
+    // Add header for the report
+    report.append("Account Report:\n");
+    report.append("Registered Users:\n");
+    
+    // Loop through registered users and append to the report
+    for (String username : userNames.keySet()) {
+        report.append(username).append(": ").append(userNames.get(username)).append("\n");
     }
+    
+    // Append totals at the end of the report
+    report.append("\nTotal Login Attempts: ").append(loginAttempts + successfulLogins + failedLogins).append("\n");
+    report.append("Successful Logins: ").append(successfulLogins).append("\n");
+    report.append("Failed Logins: ").append(failedLogins).append("\n");
+    
+    // Display the report using JOptionPane
+    JOptionPane.showMessageDialog(null, report.toString(), "Account Report", JOptionPane.INFORMATION_MESSAGE);
+}
     //The registration module
 public void registerUser () {
     // Run a do-while loop for accuracy of the username

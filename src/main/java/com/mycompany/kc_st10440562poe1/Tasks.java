@@ -14,6 +14,11 @@ public class Tasks {
     private final ArrayList<Task> taskList = new ArrayList<>();
     private int taskCount = 0; // Keeps track of the number of tasks added
 
+        // Enum representing the status of a task
+    public enum TaskStatus {
+        TO_DO, DOING, DONE
+    }
+    
     public class Task {
     private final String taskName;
     private final int taskNumber;
@@ -21,7 +26,7 @@ public class Tasks {
     private final String developerDetails;
     private final int taskDuration; // in hours
     private final String taskID;
-    private final String taskStatus;
+    private TaskStatus taskStatus;
 
     // Constructor
     public Task(String taskName, int taskNumber, String taskDescription, String developerDetails, int taskDuration) {
@@ -31,7 +36,7 @@ public class Tasks {
         this.developerDetails = developerDetails;
         this.taskDuration = taskDuration;
         this.taskID = createTaskID();
-        this.taskStatus = "To Do"; // Default status
+        this.taskStatus = TaskStatus.TO_DO; // Default status
     }
 
     // Method to check task description length
@@ -55,6 +60,11 @@ public class Tasks {
     public int getTaskDuration() {
         return taskDuration;
     }
+
+        // Method to update task status
+        public void setTaskStatus(TaskStatus status) {
+        taskStatus = status;
+        }
 }
     
     public void AddTask() {
@@ -68,16 +78,27 @@ public class Tasks {
         // Prompt for task description
         String taskDescription = JOptionPane.showInputDialog("Enter Task Description (max 50 characters):");
         if (taskDescription != null && !new Task(taskName, taskCount, taskDescription, "", 0).checkTaskDescription()) {
-            JOptionPane.showMessageDialog(null, "Description exceeds 50 characters!");
+            JOptionPane.showMessageDialog(null, "Please enter a task description of less than 50 characters!");
             return;
         }
 
-        // Prompt for developer details
-        String developerDetails = JOptionPane.showInputDialog("Enter Developer's First and Last Name:");
-        if (developerDetails == null || developerDetails.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Developer details cannot be empty!");
-            return;
-        }
+    // Prompt for developer's first name
+    String developerFirstName = JOptionPane.showInputDialog("Enter Developer's First Name:");
+    if (developerFirstName == null || developerFirstName.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Developer's first name cannot be empty!");
+        return;
+    }
+
+    // Prompt for developer's last name
+    String developerLastName = JOptionPane.showInputDialog("Enter Developer's Last Name:");
+    if (developerLastName == null || developerLastName.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Developer's last name cannot be empty!");
+        return;
+    }
+
+    // Combine first and last name into developerDetails
+    String developerDetails = developerFirstName + " " + developerLastName;
+
 
         // Prompt for task duration
         int taskDuration;
