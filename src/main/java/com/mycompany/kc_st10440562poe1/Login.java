@@ -4,7 +4,7 @@
  */
 package com.mycompany.kc_st10440562poe1;
 import java.util.*;
-import java.util.regex.Matcher;
+import javax.swing.*;
 import java.util.regex.Pattern;
 
 /**
@@ -42,29 +42,51 @@ public class Login {
         System.out.println("Failed Logins: " + failedLogins);
     }
     //The registration module
-    public void registerUser() {
-        //run a do while loop for accuracy of the username
-        String username;
-        do {
-        System.out.print("Enter username (Must contain 5 characters + underscore): ");
-        username = input.nextLine();
-        } while (!CheckUsername(username));
-        //request password
-        //run a do while loop for accuracy of the password 
-        String password;
-        do {
-        System.out.println("Enter Strong password (at least 8 characters long, with a number, Capital letter & Special Character): ");
-        password = input.nextLine();
-        } while (!checkPassword(password));
+public void registerUser () {
+    // Run a do-while loop for accuracy of the username
+    String username;
+    do {
+        username = JOptionPane.showInputDialog("Enter username (Must contain 5 characters + underscore):");
+        // If the user cancels the dialog, exit the method
+        if (username == null) {
+            JOptionPane.showMessageDialog(null, "Registration canceled.");
+            return; // Exit the method if the user cancels
+        }
+    } while (!CheckUsername(username));
 
-        System.out.print("Enter your first name: ");
-        String firstName = input.nextLine();
-        System.out.print("Enter your last name: ");      
-        String lastName = input.nextLine();
-        user.put(username, password);
-        userNames.put (username, firstName + " " + lastName);
-        System.out.println("User, registered successfully! " + username);
+    // Request password
+    // Run a do-while loop for accuracy of the password 
+    String password;
+    do {
+        password = JOptionPane.showInputDialog("Enter Strong password (at least 8 characters long, with a number, capital letter & special character):");
+        // If the user cancels the dialog, exit the method
+        if (password == null) {
+            JOptionPane.showMessageDialog(null, "Registration canceled.");
+            return; // Exit the method if the user cancels
+        }
+    } while (!checkPasswordComplexity(password));
+
+    // Request first name
+    String firstName = JOptionPane.showInputDialog("Enter your first name:");
+    // If the user cancels the dialog, exit the method
+    if (firstName == null) {
+        JOptionPane.showMessageDialog(null, "Registration canceled.");
+        return; // Exit the method if the user cancels
     }
+
+    // Request last name
+    String lastName = JOptionPane.showInputDialog("Enter your last name:");
+    // If the user cancels the dialog, exit the method
+    if (lastName == null) {
+        JOptionPane.showMessageDialog(null, "Registration canceled.");
+        return; // Exit the method if the user cancels
+    }
+
+    // Store user information
+    user.put(username, password);
+    userNames.put(username, firstName + " " + lastName);
+    JOptionPane.showMessageDialog(null, "User  registered successfully! " + username);
+}
         //Check username
     public boolean CheckUsername(String username){
         //temp variable for checking
@@ -84,7 +106,7 @@ public class Login {
         return Found;
     }
         //check the password
-    public boolean checkPassword(String password){
+    public boolean checkPasswordComplexity(String password){
         //pattern regex
         Pattern check_num = Pattern.compile("[0123456789]");
         Pattern ckeck_special = Pattern.compile("[!@#$%^&*-+_']");
@@ -109,41 +131,51 @@ public class Login {
         return Found;
     }
     //The Login Module
-    public String loginUser() {
-        while (true){
-        System.out.print("Enter username: ");
-        String username = input.nextLine();
-        System.out.print("Enter password: ");
-        String password = input.nextLine();
+public String loginUser () {
+    while (true) {
+        // Prompt for username
+        String username = JOptionPane.showInputDialog("Enter username:");
+        // Check for cancellation
+        if (username == null) {
+            JOptionPane.showMessageDialog(null, "Login canceled.");
+            return returnLoginStatus(false); // Exit if canceled
+        }
+
+        // Prompt for password
+        String password = JOptionPane.showInputDialog("Enter password:");
+        // Check for cancellation
+        if (password == null) {
+            JOptionPane.showMessageDialog(null, "Login canceled.");
+            return returnLoginStatus(false); // Exit if canceled
+        }
+
+        // Check credentials
         if (user.containsKey(username) && user.get(username).equals(password)) {
-            //concagtinate first name  & last name
+            // Concatenate first name & last name
             String fullName = userNames.get(username);
-            System.out.println("Welcome " + fullName +", it is great to see you again");
-        //Send report for attempts            
-            successfulLogins++; 
-        // Reset the counter on successful login
-            return returnLoginStatus(true);
+            JOptionPane.showMessageDialog(null, "Welcome " + fullName + ", it is great to see you again.");
+            successfulLogins++; // Increment successful logins
+            return returnLoginStatus(true); // Return successful status
         } else {
             // Increment the counter on failed login
-            loginAttempts++; 
-            System.out.println("Username or password incorrect, please try again");
+            loginAttempts++;
+            JOptionPane.showMessageDialog(null, "Username or password incorrect, please try again.");
+
             if (loginAttempts >= 5) {
-                //Propt user to try again or Exit
-                System.out.println("You have exceed the maximum number of attempts");
-                System.out.println("input yes or no to continue");
-                String response = input.nextLine();
-                if (response.equalsIgnoreCase("yes")){
-                    //Reset the counter and return to main method
+                // Prompt user to try again or exit
+                int response = JOptionPane.showConfirmDialog(null, "You have exceeded the maximum number of attempts. Do you want to try again?", "Max Attempts Exceeded", JOptionPane.YES_NO_OPTION);
+                if (response == JOptionPane.YES_OPTION) {
+                    // Reset the counter and return to login
                     loginAttempts = 0;
+                } else {
+                    // End the program
+                    JOptionPane.showMessageDialog(null, "Goodbye");
+                    return returnLoginStatus(false); // Return failed status
                 }
-            }else {
-            //End the program
-            System.out.println("Goodbye");
-            return returnLoginStatus(false);           
-            }
             }
         }
     }
+}
     //Method to return the login status post attempts
     public String returnLoginStatus(boolean loginStatus) {
     if (loginStatus) {
@@ -153,42 +185,7 @@ public class Login {
     }
 }
     //Method called for display and Options at Start
-    public void run() {
-        //Using a while loop for the promting (No Limit on Attempts)
-        while (true) {
-            System.out.println("Welcome to the Login Menu");
-            System.out.println("1. Register");
-            System.out.println("2. Login");
-            System.out.println("3. Exit");
-            
-            //Break line for clarity
-            System.out.println("----------------------------------------------");
-            System.out.print("Choose a number option from provided: ");
-            
-            //Allow user to insert a selection
-            int option = Integer.parseInt(input.nextLine());
-            switch (option) {
-                case 1 -> registerUser();
-                case 2 -> { String loginStatus = loginUser();
-                System.out.println(loginStatus);
-                if (loginStatus.equals("Successful Login")) {
-                    System.out.println("You are now logged in.");
-                } else {
-                    System.out.println("Login failed. Please try again.");
-                }
-            }
-                case 3 -> { 
-                    printAccountReport();
-                    System.out.println("Goodbye!");
-                
-                        // Login successful, exit the loop
-                        return;
-                    }
-                //if user selects bad options
-                default -> System.out.println("Invalid option!");
-            }
-        }
-    }
+
 
     public static void main(String[] args) {
         // This method should not be called directly
