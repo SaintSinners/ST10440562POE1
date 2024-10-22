@@ -81,7 +81,7 @@ public class KC_ST10440562POE1 {
 
                         switch (easyKanbanChoice) {
                             case 1 -> // Add task functionality
-                                work.AddTask();
+                                work.addTask();
                             case 2 -> JOptionPane.showMessageDialog(null, "Coming soon...");
                             case 3 -> { login.printAccountReport();
                                 JOptionPane.showMessageDialog(null, "Goodbye!");
