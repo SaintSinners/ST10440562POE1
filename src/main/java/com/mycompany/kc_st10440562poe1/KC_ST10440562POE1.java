@@ -13,95 +13,94 @@ public class KC_ST10440562POE1 {
     
 
     public static void main(String[] args) {
-        //Object of a class called for the Login applicatin
-            run program = new run();
+        // Start the application
+        Run loginApp = new Run(); // Create an instance of Run to start the program
     }
-        private static class run {
+    private static class Run {
 
-        public run() {// Using a while loop for the prompting (No Limit on Attempts)
-            Login login = new Login();
-    while (true) {
-        // Display welcome message and options
-        String message = """
-                         Welcome to the Login Menu
-                         1. Register
-                         2. Login
-                         3. Exit
-                         -------------------------------------------------------""";
-        String optionString = JOptionPane.showInputDialog(message + "\nChoose a number option from provided:");
+        public Run() { // Using a while loop for the prompting (No Limit on Attempts)
 
-        // Check if the user clicked "Cancel" or closed the dialog
-        if (optionString == null) {
-            JOptionPane.showMessageDialog(null, "Goodbye!");
-            return; // Exit the loop if the user cancels
-        }
+            while (true) {
+                // Display welcome message and options
+                String message = """
+                                 Welcome to the Login Menu
+                                 1. Register
+                                 2. Login
+                                 3. Exit
+                                 -------------------------------------------------------""";
+                String optionString = JOptionPane.showInputDialog(message + "\nChoose a number option from provided:");
 
-        // Convert the input to an integer
-        int option;
-        try {
-            option = Integer.parseInt(optionString);
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Invalid input! Please enter a number.");
-            continue; // Restart the loop
-        }
+                // Check if the user clicked "Cancel" or closed the dialog
+                if (optionString == null) {
+                    JOptionPane.showMessageDialog(null, "Goodbye!");
+                    return; // Exit the loop if the user cancels
+                }
 
-        switch (option) {
-            case 1 -> login.registerUser();
-            case 2 -> {
-                String loginStatus = login.loginUser();
-                JOptionPane.showMessageDialog(null, loginStatus);
-                if (loginStatus.equals("Successful Login")) {
-                    JOptionPane.showMessageDialog(null, "You are now logged in.");
-                    
-                    // Display the EasyKanban menu
-                    while (true) {
-                        String easyKanbanMenu = """
-                                                Welcome to EasyKanban
-                                                1. Add task
-                                                2. Show Report
-                                                3. Quit
-                                                -------------------------------------------------------""";
-                        String easyKanbanOption = JOptionPane.showInputDialog(easyKanbanMenu + "\nChoose an option:");
-                        
-                        // Check if the user clicked "Cancel" or closed the dialog
-                        if (easyKanbanOption == null) {
-                            JOptionPane.showMessageDialog(null, "Goodbye!");
-                            return; // Exit the loop if the user cancels
-                        }
-                        
-                        // Convert the input to an integer
-                        int easyKanbanChoice;
-                        try {
-                            easyKanbanChoice = Integer.parseInt(easyKanbanOption);
-                        } catch (NumberFormatException e) {
-                            JOptionPane.showMessageDialog(null, "Invalid input! Please enter a number.");
-                            continue; // Restart the loop
-                        }
-                        Tasks work = new Tasks();
+                // Convert the input to an integer
+                int option;
+                try {
+                    option = Integer.parseInt(optionString);
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Invalid input! Please enter a number.");
+                    continue; // Restart the loop
+                }
 
-                        switch (easyKanbanChoice) {
-                            case 1 -> // Add task functionality
-                                work.addTask();
-                            case 2 -> JOptionPane.showMessageDialog(null, "Coming soon...");
-                            case 3 -> { login.printAccountReport();
-                                JOptionPane.showMessageDialog(null, "Goodbye!");
-                                return; // Exit the loop
+                Login login = new Login();
+                switch (option) {
+                    case 1 -> login.registerUser();
+                    case 2 -> {
+                        String loginStatus = login.loginUser();
+                        JOptionPane.showMessageDialog(null, loginStatus);
+                        if (loginStatus.equals("Successful Login")) {
+                            JOptionPane.showMessageDialog(null, "You are now logged in.");
+                            
+                            // Display the EasyKanban menu
+                            while (true) {
+                                String easyKanbanMenu = """
+                                                        Welcome to EasyKanban
+                                                        1. Add task
+                                                        2. Show Report
+                                                        3. Quit
+                                                        -------------------------------------------------------""";
+                                String easyKanbanOption = JOptionPane.showInputDialog(easyKanbanMenu + "\nChoose an option:");
+                                
+                                // Check if the user clicked "Cancel" or closed the dialog
+                                if (easyKanbanOption == null) {
+                                    JOptionPane.showMessageDialog(null, "Goodbye!");
+                                    return; // Exit the loop if the user cancels
+                                }
+                                
+                                // Convert the input to an integer
+                                int easyKanbanChoice;
+                                try {
+                                    easyKanbanChoice = Integer.parseInt(easyKanbanOption);
+                                } catch (NumberFormatException e) {
+                                    JOptionPane.showMessageDialog(null, "Invalid input! Please enter a number.");
+                                    continue; // Restart the loop
+                                }
+                                switch (easyKanbanChoice) {
+                                    case 1 -> Tasks.addTasks(); // Call method to add task from Tasks class
+                                    case 2 -> Tasks.showAllTasks(); // Show all tasks
+                                    case 3 -> { 
+                                        login.printAccountReport();
+                                        JOptionPane.showMessageDialog(null, "Goodbye!");
+                                        return; // Exit the loop
+                                    }
+                                    default -> JOptionPane.showMessageDialog(null, "Invalid option!");
+                                }
                             }
-                            default -> JOptionPane.showMessageDialog(null, "Invalid option!");
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Login failed. Please try again.");
                         }
                     }
-                } else {
-                    JOptionPane.showMessageDialog(null, "Login failed. Please try again.");
-                }               }
-            case 3 -> {
-                login.printAccountReport();
-                JOptionPane.showMessageDialog(null, "Goodbye!");
-                return; // Exit the loop
+                    case 3 -> {
+                        login.printAccountReport();
+                        JOptionPane.showMessageDialog(null, "Goodbye!");
+                        return; // Exit the loop
+                    }
+                    default -> JOptionPane.showMessageDialog(null, "Invalid option!");
+                }
             }
-            default -> JOptionPane.showMessageDialog(null, "Invalid option!");
         }
     }
 }
-
-        }
-    }
