@@ -16,6 +16,7 @@ public class KC_ST10440562POE1 {
         // Start the application
         Run loginApp = new Run(); // Create an instance of Run to start the program
     }
+
     private static class Run {
 
         public Run() { // Using a while loop for the prompting (No Limit on Attempts)
@@ -47,29 +48,35 @@ public class KC_ST10440562POE1 {
 
                 Login login = new Login();
                 switch (option) {
-                    case 1 -> login.registerUser();
+                    case 1 -> login.registerUser ();
                     case 2 -> {
-                        String loginStatus = login.loginUser();
-                        JOptionPane.showMessageDialog(null, loginStatus);
-                        if (loginStatus.equals("Successful Login")) {
-                            JOptionPane.showMessageDialog(null, "You are now logged in.");
-                            
+                    String loginStatus = login.loginUser ();
+                    JOptionPane.showMessageDialog(null, loginStatus);
+                    System.out.println("Login status: " + loginStatus); // Debugging output
+                    if (loginStatus.equals("Successful Login")) {
+                    JOptionPane.showMessageDialog(null, "You are now logged in.");
+                    // Proceed to EasyKanban menu
+                    } else {
+                    System.out.println("Login failed, not proceeding to Kanban menu."); // Debugging output
+    
                             // Display the EasyKanban menu
                             while (true) {
                                 String easyKanbanMenu = """
                                                         Welcome to EasyKanban
                                                         1. Add task
                                                         2. Show Report
-                                                        3. Quit
+                                                        3. Task Manager
+                                                        4. Quit
                                                         -------------------------------------------------------""";
                                 String easyKanbanOption = JOptionPane.showInputDialog(easyKanbanMenu + "\nChoose an option:");
-                                
+
                                 // Check if the user clicked "Cancel" or closed the dialog
                                 if (easyKanbanOption == null) {
-                                    JOptionPane.showMessageDialog(null, "Goodbye!");
+                                    String loginReport = login.getLoginReport();
+                                    JOptionPane.showMessageDialog(null, "Goodbye!\n\n" + loginReport);
                                     return; // Exit the loop if the user cancels
                                 }
-                                
+
                                 // Convert the input to an integer
                                 int easyKanbanChoice;
                                 try {
@@ -78,27 +85,36 @@ public class KC_ST10440562POE1 {
                                     JOptionPane.showMessageDialog(null, "Invalid input! Please enter a number.");
                                     continue; // Restart the loop
                                 }
+
                                 switch (easyKanbanChoice) {
-                                    case 1 -> Tasks.addTasks(); // Call method to add task from Tasks class
-                                    case 2 -> Tasks.showAllTasks(); // Show all tasks
-                                    case 3 -> { 
-                                        login.printAccountReport();
-                                        JOptionPane.showMessageDialog(null, "Goodbye!");
-                                        return; // Exit the loop
+                                    case 1 -> {
+                                        // Assuming you have an AddTask class or method to handle task addition
+                                        Tasks.addMultipleTasks();  // Call the method to add a new task
                                     }
-                                    default -> JOptionPane.showMessageDialog(null, "Invalid option!");
+                                    case 2 -> {
+                                       // Show all tasks and their total durations
+                                       Tasks.showAllTasks(); // Call the method to display all tasks
+                                    }
+                                    case 3 -> {
+                                        // Invoke the search functionality
+                                        Search.searchTasks(); // Call the search method
+                                    }
+                                    case 4 -> {
+                                        String loginReport = login.getLoginReport(); // Get the login report
+                                        JOptionPane.showMessageDialog(null, "Exiting EasyKanban.\n\n" + loginReport);
+                                        return; // Exit the EasyKanban menu loop
+                                    }
+                                    default -> JOptionPane.showMessageDialog(null, "Invalid option. Please try again.");
                                 }
                             }
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Login failed. Please try again.");
                         }
                     }
                     case 3 -> {
-                        login.printAccountReport();
-                        JOptionPane.showMessageDialog(null, "Goodbye!");
-                        return; // Exit the loop
-                    }
-                    default -> JOptionPane.showMessageDialog(null, "Invalid option!");
+                        String loginReport = login.getLoginReport(); // Get the login report
+                        JOptionPane.showMessageDialog(null, "Goodbye!\n\n" + loginReport); // Display the goodbye message along with the report
+                        return; // Exit the program
+                        }
+                    default -> JOptionPane.showMessageDialog(null, "Invalid option. Please try again.");
                 }
             }
         }
