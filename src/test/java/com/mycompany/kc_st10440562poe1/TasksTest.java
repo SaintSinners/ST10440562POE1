@@ -7,6 +7,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
+import static org.junit.jupiter.api.Assertions.*;
+
 /**
  *
  * @author RC_Student_lab
@@ -21,10 +23,10 @@ public class TasksTest {
     }
     
     @BeforeEach
-    public void setUp() {
+    public void setUp(int taskDuration) {
          // Setting up a sample task before each test, Instance of a class with parameters
-        task = new Tasks("Login Feature", "Create Login to authenticate users", "Robyn Harrison", 8, Tasks.TaskStatus.TO_DO);
-        task2 = new Tasks("Add Task Feature", "Create Add Task Feature to add task users", "Mike Smith", 10, Tasks.TaskStatus.DOING);
+        task = new Tasks("Login Feature", "Create Login to authenticate users", "Robyn Harrison", taskDuration, Tasks.TaskStatus.TO_DO);
+        task2 = new Tasks("Add Task Feature", "Create Add Task Feature to add task users", "Mike Smith", taskDuration, Tasks.TaskStatus.DOING);
         // Initialize the task list before each test
         taskList = new ArrayList<>();
     }
@@ -56,16 +58,18 @@ public class TasksTest {
     @Test 
     public void testTaskDescriptionLength() {
         org.junit.jupiter.api.Assertions.assertTrue(task.checkTaskDescription());
+        int taskDuration = 0;
         // Create a task with a long description
-        Tasks longDescriptionTask = new Tasks("Login Feature", "Create Login to authenticate users, This description is way too long and should fail the validation because it exceeds the limit of fifty characters.", "Robyn Harrison", 8, Tasks.TaskStatus.TO_DO);
+        Tasks longDescriptionTask = new Tasks("Login Feature", "Create Login to authenticate users, This description is way too long and should fail the validation because it exceeds the limit of fifty characters.", "Robyn Harrison", taskDuration, Tasks.TaskStatus.TO_DO);
         org.junit.jupiter.api.Assertions.assertFalse(longDescriptionTask.checkTaskDescription());
     }
     @Test 
     public void testTotalHoursCalculation() {
+        int taskDuration = 0;
         // Add multiple tasks to the task list
-        Tasks tasks = new Tasks("Login Feature", "Create Login to authenticate users", "Robyn Harrison", 8, Tasks.TaskStatus.TO_DO);
-        Tasks tasks1 = new Tasks("Add Task Feature", "Create AddTask Feature to add task users", "Mike Smith", 10, Tasks.TaskStatus.DOING);
-        Tasks tasks2 = new Tasks("Task 3", "Description 3", "Dev 3", 3, Tasks.TaskStatus.DONE);
+        Tasks tasks = new Tasks("Login Feature", "Create Login to authenticate users", "Robyn Harrison", taskDuration, Tasks.TaskStatus.TO_DO);
+        Tasks tasks1 = new Tasks("Add Task Feature", "Create AddTask Feature to add task users", "Mike Smith", taskDuration, Tasks.TaskStatus.DOING);
+        Tasks tasks2 = new Tasks("Task 3", "Description 3", "Dev 3", taskDuration, Tasks.TaskStatus.DONE);
         taskList.add(tasks);
         taskList.add(tasks1);
         taskList.add(tasks2);
@@ -106,30 +110,130 @@ public class TasksTest {
         // Assert that the total hours equals 89
         org.junit.jupiter.api.Assertions.assertEquals(89, totalHours);
     }
+    @Test
+    public void testToString() {
+        System.out.println("toString");
+        Tasks instance = null;
+        String expResult = "";
+        String result = instance.toString();
+        assertEquals(expResult, result);
+    }
+
     //Test of addTasks method, of class Tasks.
     @Test
     public void testAddTasks() {
         System.out.println("addTasks");
-        Tasks.addTasks();
+        Tasks.addMultipleTasks();
     }
 
     //Test of addTask method, of class Tasks.
     @Test
     public void testAddTask() {
         System.out.println("addTask");
-        Tasks.addTask();
+        Tasks.addMultipleTasks();
     }
+
+    //Test of printTaskDetails method, of class Tasks.
+    @Test
+    public void testPrintTaskDetails() {
+        System.out.println("printTaskDetails");
+        Tasks instance = null;
+        String expResult = "";
+        String result = instance.printTaskDetails();
+        assertEquals(expResult, result);
+    }
+
+    //Test of returnTotalHours method, of class Tasks.
+    @Test
+    public void testReturnTotalHours() {
+        System.out.println("returnTotalHours");
+        int expResult = 0;
+        int result = Tasks.returnTotalHours();
+        assertEquals(expResult, result);
+    }
+
     //Test of showAllTasks method, of class Tasks.
     @Test
     public void testShowAllTasks() {
         System.out.println("showAllTasks");
         Tasks.showAllTasks();
     }
+
     //Test of showTasks method, of class Tasks.
     @Test
     public void testShowTasks() {
         System.out.println("showTasks");
         String category = "";
         Tasks.showTasks(category);
+    }
+
+    //Test of checkTaskDescription method, of class Tasks.
+    @Test
+    public void testCheckTaskDescription() {
+        System.out.println("checkTaskDescription");
+        Tasks instance = null;
+        boolean expResult = false;
+        boolean result = instance.checkTaskDescription();
+        assertEquals(expResult, result);
+    }
+
+    //Test of getTaskDuration method, of class Tasks.
+    @Test
+    public void testGetTaskDuration() {
+        System.out.println("getTaskDuration");
+        Tasks instance = null;
+        int expResult = 0;
+        int result = instance.getTaskDuration();
+        assertEquals(expResult, result);
+    }
+
+    //Test of getTaskName method, of class Tasks.
+    @Test
+    public void testGetTaskName() {
+        System.out.println("getTaskName");
+        Tasks instance = null;
+        String expResult = "";
+        String result = instance.getTaskName();
+        assertEquals(expResult, result);
+    }
+
+    //Test of getDeveloperDetails method, of class Tasks.
+    @Test
+    public void testGetDeveloperDetails() {
+        System.out.println("getDeveloperDetails");
+        Tasks instance = null;
+        String expResult = "";
+        String result = instance.getDeveloperDetails();
+        assertEquals(expResult, result);
+    }
+
+    //Test of getTaskID method, of class Tasks.
+    @Test
+    public void testGetTaskID() {
+        System.out.println("getTaskID");
+        Tasks instance = null;
+        String expResult = "";
+        String result = instance.getTaskID();
+        assertEquals(expResult, result);
+    }
+
+    //Test of getTaskStatus method, of class Tasks.
+    @Test
+    public void testGetTaskStatus() {
+        System.out.println("getTaskStatus");
+        Tasks instance = null;
+        Tasks.TaskStatus expResult = null;
+        Tasks.TaskStatus result = instance.getTaskStatus();
+        assertEquals(expResult, result);
+    }
+
+    //Test of getTaskDescription method, of class Tasks.
+    @Test
+    public void testGetTaskDescription() {
+        System.out.println("getTaskDescription");
+        Tasks instance = null;
+        String expResult = "";
+        String result = instance.getTaskDescription();
+        assertEquals(expResult, result);
     }
 }
