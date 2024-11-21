@@ -7,144 +7,122 @@ import javax.swing.*;
 import java.util.regex.Pattern;
 import java.util.HashMap;
 
-/**
- * word document added with notes
- * @author RC_Student_lab
- */
 public class Login {
-    //protect the login credentials
+    // Protect the login credentials
     private String username;
     private String password;
     final String name;
     private int loginAttempts;
     private int successfulLogins;
     private final int failedLogins;
+
     // HashMap to store user credentials
     private static final HashMap<String, String> userCredentials = new HashMap<>();
     private static final HashMap<String, String> userNames = new HashMap<>();
-    
-    
+
     public Login() {
-        //make the variables accessible to the main program and initialized to empty
+        // Initialize variables
         this.username = "";
         this.password = "";
         this.name = "";
-        // Initialize counter variables
         this.loginAttempts = 0;
         this.successfulLogins = 0;
         this.failedLogins = 0;
     }
-    //Method to print account report
-public void printAccountReport() {
-    // Create a StringBuilder to build the report string
-    StringBuilder report = new StringBuilder();
-    report.append("Username: ").append(username).append("\n");
-    report.append("Name: ").append(name).append("\n");
+
+    // Method to print account report
+    public void printAccountReport() {
+        StringBuilder report = new StringBuilder();
+        report.append("Username: ").append(username).append("\n");
+        report.append("Name: ").append(userNames.get(username)).append("\n");
         
-    // Display the user information
-    JOptionPane.showMessageDialog(null, report.toString(), "User  Info", JOptionPane.INFORMATION_MESSAGE);
-    // Append totals at the end of the report
-    report.append("\nTotal Login Attempts: ").append(loginAttempts + successfulLogins + failedLogins).append("\n");
-    report.append("Successful Logins: ").append(successfulLogins).append("\n");
-    report.append("Failed Logins: ").append(failedLogins).append("\n");
-    
-    // Display the report using JOptionPane
-    JOptionPane.showMessageDialog(null, report.toString(), "Account Report", JOptionPane.INFORMATION_MESSAGE);
-}
-    //The registration module
-public void registerUser () {
-    // Run a do-while loop for accuracy of the username
-    do {
-        username = JOptionPane.showInputDialog("Enter username (Must contain no more than 5 characters + underscore):");
-        // If the user cancels the dialog, exit the method
-        if (username == null) {
-            JOptionPane.showMessageDialog(null, "Registration canceled.");
-            return; // Exit the method if the user cancels
-        }
-    } while (!CheckUsername(username));
-
-    // Request password
-    // Run a do-while loop for accuracy of the password 
-    do {
-        password = JOptionPane.showInputDialog("Enter Strong password (at least 8 characters long, with a number, capital letter & special character):");
-        // If the user cancels the dialog, exit the method
-        if (password == null) {
-            JOptionPane.showMessageDialog(null, "Registration canceled.");
-            return; // Exit the method if the user cancels
-        }
-    } while (!checkPasswordComplexity(password));
-
-    // Request first name
-    String firstName = JOptionPane.showInputDialog("Enter your first name:");
-    // If the user cancels the dialog, exit the method
-    if (firstName == null) {
-        JOptionPane.showMessageDialog(null, "Registration canceled.");
-        return; // Exit the method if the user cancels
+        // Append totals at the end of the report
+        report.append("\nTotal Login Attempts: ").append(loginAttempts + successfulLogins + failedLogins).append("\n");
+        report.append("Successful Logins: ").append(successfulLogins).append("\n");
+        report.append("Failed Logins: ").append(failedLogins).append("\n");
+        
+        // Display the report using JOptionPane
+        JOptionPane.showMessageDialog(null, report.toString(), "Account Report", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    // Request last name
-    String lastName = JOptionPane.showInputDialog("Enter your last name:");
-    // If the user cancels the dialog, exit the method
-    if (lastName == null) {
-        JOptionPane.showMessageDialog(null, "Registration canceled.");
-        return; // Exit the method if the user cancels
-    }
-            // Check if the username already exists
+    // The registration module
+    public void registerUser () {
+        do {
+            username = JOptionPane.showInputDialog("Enter username (Must contain no more than 5 characters + underscore):");
+            if (username == null) {
+                JOptionPane.showMessageDialog(null, "Registration canceled.");
+                return; // Exit if canceled
+            }
+        } while (!CheckUsername(username));
+
+        do {
+            password = JOptionPane.showInputDialog("Enter Strong password (at least 8 characters long, with a number, capital letter & special character):");
+            if (password == null) {
+                JOptionPane.showMessageDialog(null, "Registration canceled.");
+                return; // Exit if canceled
+            }
+        } while (!checkPasswordComplexity(password));
+
+        String firstName = JOptionPane.showInputDialog("Enter your first name:");
+        if (firstName == null) {
+            JOptionPane.showMessageDialog(null, "Registration canceled.");
+            return; // Exit if canceled
+        }
+
+        String lastName = JOptionPane.showInputDialog("Enter your last name:");
+        if (lastName == null) {
+            JOptionPane.showMessageDialog(null, "Registration canceled.");
+            return; // Exit if canceled
+        }
+
         if (userCredentials.containsKey(username)) {
             JOptionPane.showMessageDialog(null, "Username already exists. Please choose a different username.");
         } else {
-        // Store user information
-        userCredentials.put(username, password);
-        userNames.put(username, firstName + " " + lastName); // Store full name
-        JOptionPane.showMessageDialog(null, "User  registered successfully! Username: " + username);
+            userCredentials.put(username, password);
+            userNames.put(username, firstName + " " + lastName); // Store full name
+            JOptionPane.showMessageDialog(null, "User  registered successfully! Username: " + username);
         }
+    }
+
+    public boolean CheckUsername(String username) {
+        boolean found;
+        if (username.contains("_") && username.length() == 5) {
+            found = true;
+            JOptionPane.showMessageDialog(null, "Username successfully captured!");
+        } else {
+            found = false;
+            JOptionPane.showMessageDialog(null, "Username is not correctly formatted, please ensure that your username contains an underscore and is no more than 5 characters in length");
+        }
+        return found;
+    }
+    public String getLoginReport() {
+    StringBuilder report = new StringBuilder();
+    report.append("Login Report:\n");
+    report.append("Total Login Attempts: ").append(loginAttempts + successfulLogins + failedLogins).append("\n");
+    report.append("Successful Logins: ").append(successfulLogins).append("\n");
+    report.append("Failed Logins: ").append(failedLogins).append("\n");
+    return report.toString();
 }
-        //Check username
-    public boolean CheckUsername(String username){
-        //temp variable for checking
-        boolean  Found;
+
+    public boolean checkPasswordComplexity(String password) {
+        Pattern check_num = Pattern.compile("[0-9]");
+        Pattern check_special = Pattern.compile("[!@#$%^&*-+_']");
+        Pattern check_upper = Pattern.compile("[A-Z]");
         
-        //Check the username
-        if (username.contains("_") && username.length()==5){
-            //then assign to true
-            Found = true;
-            //message output
-            JOptionPane.showMessageDialog(null,"Username successfully captured!");
-        }else{
-            //assign to false
-            Found = false;
-            JOptionPane.showMessageDialog(null,"Username is not correctly formatted, please ensure that your username contains an underscoreand is no more tha 5 characters in length");
+        boolean found;
+        if (check_num.matcher(password).find() && check_special.matcher(password).find() && check_upper.matcher(password).find() && password.length() >= 8) {
+            found = true;
+            JOptionPane.showMessageDialog(null, "Password successfully captured!");
+        } else {
+            found = false;
+            JOptionPane.showMessageDialog(null, "Password is not correctly formatted, Please ensure that your password contains at least 8 characters, a capital letter, a number, and a special character");
         }
-        return Found;
+        return found;
     }
-        //check the password
-    public boolean checkPasswordComplexity(String password){
-        //pattern regex
-        Pattern check_num = Pattern.compile("[0123456789]");
-        Pattern ckeck_special = Pattern.compile("[!@#$%^&*-+_']");
-        Pattern check_upper =Pattern.compile("[ABCDEFGHIJKLMNOPQRSTUVWXYZ]");
-        
-        // temp Variable for Found
-        boolean Found;
-        
-        //check all here
-        if(check_num.matcher(password).find() && ckeck_special.matcher(password).find() && check_upper.matcher(password).find()){
-            
-            //assign true
-            Found = true;
-            //Message
-            JOptionPane.showMessageDialog(null,"Password successfully captured!");
-        } else{
-            //assign false
-            Found = false;
-            //message
-            JOptionPane.showMessageDialog(null,"Password is not correctly formatted, Please ensure that your password contains atleast 8 characters, a capital letter, a number and a special character");
-        }
-        return Found;
-    }
-// The Login Module
-public String loginUser () {
-    while (true) {
+
+    // The Login Module
+    public String loginUser () {
+        while (true) {
         // Prompt for username
         username = JOptionPane.showInputDialog("Enter username:");
         // Check for cancellation
@@ -191,7 +169,7 @@ if (userCredentials.containsKey(username) && userCredentials.get(username).equal
     //Method to return the login status post attempts
     public String returnLoginStatus(boolean loginStatus) {
     if (loginStatus) {
-        return "Successful Login";
+        return "Successful Login \n Keep login credentials private";
     } else {
         return "Failed Login";
     }
