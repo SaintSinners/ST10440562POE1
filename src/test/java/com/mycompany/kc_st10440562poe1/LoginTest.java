@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LoginTest {
+
     @Test
     public void testCheckUsername() {
         System.out.println("CheckUsername");
@@ -16,7 +17,7 @@ public class LoginTest {
         boolean result = instance.CheckUsername(username);
         assertEquals(expResult, result);
     }
-        @Test
+    @Test
     public void testCheckUsernameTrue() {
         System.out.println("CheckUsername");
         String username = "kyl_1";
@@ -34,7 +35,7 @@ public class LoginTest {
         boolean result = instance.checkPasswordComplexity(password);
         assertEquals(expResult, result);
     }
-        @Test
+    @Test
     public void testCheckPasswordTrue() {
         System.out.println("checkPassword");
         String password = "Ch&&sec@ke99";
